@@ -106,10 +106,13 @@ $$
 #### Zero net water flux
 
 The pill is impermeable to water, so $N_{Br}(R)=0$. The steady radial water balance says $rN_{Br}$ is constant, which gives $N_{Br}=0$ throughout the layer. Substitute that into the previous equation:
+
 $$
 N_{Ar}=-cD_{AB}\frac{dx_A}{dr}+x_A N_{Ar}.
 $$
+
 Move the last term to the left and solve:
+
 $$
 (1-x_A)N_{Ar}=-cD_{AB}\frac{dx_A}{dr}
 \quad\Longrightarrow\quad
@@ -117,16 +120,20 @@ $$
 N_{Ar}=-\frac{cD_{AB}}{1-x_A}\frac{dx_A}{dr}.
 }
 $$
+
 Why is there mixture motion when the water has zero net flux? The mixture’s molar-average velocity depends on the sum $N_{Ar}+N_{Br}$. The drug moves outward, so that sum is positive even though $N_{Br}=0$. For water, inward diffusion balances outward transport by the mixture.
 
 #### Combine the shell balance with Fick’s law
 
 Substitute the shell balance into the radial flux law.
+
 $$
 \frac{C_1}{r}=N_{Ar}
 =-\frac{cD_{AB}}{1-x_A}\frac{dx_A}{dr}.
 $$
+
 Separate the radius and mole-fraction terms:
+
 $$
 \frac{C_1}{cD_{AB}}\frac{dr}{r}
 =-\frac{dx_A}{1-x_A}.
@@ -174,8 +181,8 @@ $$
 f(r)=\frac{\ln(r/R)}{\ln[(R+\delta)/R]},
 $$
 which goes from $0$ at the pill surface to $1$ at the edge of the layer. Exponentiating and solving for $c_A(r)$ gives
-$$
 
+$$
 \boxed{
 c_A(r)=c-(c-c_{As})
 \left(\frac{c-c_\infty}{c-c_{As}}\right)^{f(r)}.
@@ -370,7 +377,13 @@ $$
 | $10\ \mathrm{cm}$ | $5.0\times10^4$ | 742 | $7.42\times10^{-4}\ \mathrm{cm/s}$ |
 | $30\ \mathrm{cm}$ | $1.5\times10^5$ | 1,286 | $4.29\times10^{-4}\ \mathrm{cm/s}$ |
 
-The coefficient is larger at $10\ \mathrm{cm}$ because the concentration boundary layer is thinner there. Even though $\mathrm{Sh}_x$ increases downstream, $k_c=\mathrm{Sh}_xD_{A,W}/x$ decreases.
+The coefficient is larger at $10\ \mathrm{cm}$ because the concentration boundary layer is thinner there. Even though $\mathrm{Sh}_x$ increases downstream, 
+
+$$ 
+k_c=\mathrm{Sh}_xD_{A,W}/x
+$$ 
+
+decreases.
 
 ### 4(d) Calculate the average mass-transfer coefficient
 
