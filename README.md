@@ -44,6 +44,10 @@ The model is one-dimensional in space. Concentration and flux vary with radial p
 | Outer edge of the water layer, $r=R+\delta$ | $c_A(R+\delta)=c_\infty$ | The concentration matches the bulk liquid. |
 | Pill surface, $r=R$ | $N_{Br}(R)=0$ | Water cannot cross the pill surface. |
 
+<img width="2048" height="1423" alt="image" src="https://github.com/user-attachments/assets/4c2096ae-b1d6-48b6-ab98-7d962d9e46a9" />
+<img width="2048" height="1423" alt="image" src="https://github.com/user-attachments/assets/b142f640-db2c-4c06-bd78-8b9f84ce487c" />
+
+
 
 ### 1(a) Steady-state concentration profile and flux
 
