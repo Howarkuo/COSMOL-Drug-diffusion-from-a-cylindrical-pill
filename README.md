@@ -292,6 +292,7 @@ Substitute $C_1$ back into the integrated equation. Define
 $$
 f(r)=\frac{\ln(r/R)}{\ln[(R+\delta)/R]},
 $$
+
 which goes from $0$ at the pill surface to $1$ at the edge of the layer. Exponentiating and solving for $c_A(r)$ gives
 
 $$
