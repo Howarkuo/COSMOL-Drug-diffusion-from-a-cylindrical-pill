@@ -58,14 +58,18 @@ Here $A$ is the drug, $B$ is water, and positive flux points radially outward. T
 #### Fick’s law in radial coordinates
 
 For a concentration that varies only with radius, Fick’s law gives the radial diffusive flux.
-$$ J_{Ar}=-D_{AB}\frac{dc_A}{dr}.$$
-The problem assumes constant total molar concentration $c=c_A+c_B$. The drug mole fraction is $x_A=c_A/c$, so
+
 $$
-\frac{dc_A}{dr}=c\frac{dx_A}{dr}
-\quad\Longrightarrow\quad
-\boxed{J_{Ar}=-cD_{AB}\frac{dx_A}{dr}}.
+J_{Ar} = -D_{AB} \frac{dc_A}{dr}
 $$
-This is the radial component of $\mathbf J_A=-cD_{AB}\nabla x_A$.
+
+The problem assumes constant total molar concentration $c = c_A + c_B$. The drug mole fraction is $x_A = c_A/c$, so
+
+$$
+\frac{dc_A}{dr} = c \frac{dx_A}{dr} \quad \Longrightarrow \quad \boxed{J_{Ar} = -c D_{AB} \frac{dx_A}{dr}}
+$$
+
+This is the radial component of $\mathbf{J}_A = -c D_{AB} \nabla x_A$.
 
 #### Drug carried by mixture motion
 
