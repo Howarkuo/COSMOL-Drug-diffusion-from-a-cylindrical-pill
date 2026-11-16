@@ -53,8 +53,7 @@ Take a **fixed control volume** $V$ in the water. Let $c_A$ be the molar concent
 
 $$
 \underbrace{\frac{d}{dt}\int_V c_A\,dV}_{\text{accumulation}}
-=
--\underbrace{\int_{\partial V}\mathbf N_A\cdot\mathbf n\,dS}_{\text{net outward flow}}
+=-\underbrace{\int_{\partial V}\mathbf N_A\cdot\mathbf n\,dS}_{\text{net outward flow}}
 +\underbrace{\int_V R_A\,dV}_{\text{generation}}.
 $$
 
