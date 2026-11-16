@@ -23,7 +23,81 @@ The model is one-dimensional in space. Concentration and flux vary with radial p
 <img width="1122" height="565" alt="image" src="https://github.com/user-attachments/assets/f3d766b0-9e89-4a4e-897e-bb06a4324839" />
 <img width="1376" height="768" alt="Gemini_Generated_Image_klupb2klupb2klup" src="https://github.com/user-attachments/assets/fa9c6b9f-2209-423c-8260-30193e94e742" />
 <img width="1750" height="1400" alt="image" src="https://github.com/user-attachments/assets/2d416474-4c50-46c1-bf72-9004c9efe01f" />
+## Cylindrical Pill: Radial Flux Equation Integration
 
+
+## 1. Governing Equations
+
+A steady-state shell balance in cylindrical coordinates yields:
+
+$$
+r N_{Ar} = C_1
+$$
+
+Combining this shell balance with Fick’s law for diffusion through stagnant water (zero net water flux, $N_{Br} = 0$) gives the governing differential equation:
+
+$$
+\frac{C_1}{r} = -\frac{c D_{AB}}{1 - x_A} \frac{dx_A}{dr}
+$$
+
+---
+
+## 2. Separation of Variables & Integration
+
+Separating the radial coordinate and composition variables, we integrate from the pill surface ($r = R$, where $x_A = x_{As}$) to an arbitrary radial position $r$ within the water boundary layer:
+
+$$
+\underbrace{\frac{C_1}{c D_{AB}} \int_R^r \frac{d\rho}{\rho}}_{\text{radius}} = \underbrace{-\int_{x_{As}}^{x_A(r)} \frac{du}{1 - u}}_{\text{drug mole fraction}}
+$$
+
+Evaluating both integrals yields the integrated relationship:
+
+$$
+\boxed{
+\frac{C_1}{c D_{AB}} \ln\frac{r}{R} = \ln\frac{1 - x_A(r)}{1 - x_{As}}
+}
+$$
+
+### Physical Interpretation
+* **Radius logarithm ($\ln(r/R)$):** Comes from the changing cylindrical surface area ($2\pi r L$) as the radial distance increases.
+* **Composition logarithm ($\ln\left[\frac{1 - x_A(r)}{1 - x_{As}}\right]$):** Comes from the $\frac{1}{1 - x_A}$ factor accounting for bulk convective transport induced by unidirectional diffusion of species $A$.
+
+---
+
+## 3. Boundary Conditions & Final Profiles
+
+Set $r = R + \delta$ and $x_A = x_{A\infty}$ at the outer edge of the stagnant water layer to solve for the integration constant $C_1$:
+
+$$
+C_1 = \frac{c D_{AB}}{\ln\left(\frac{R + \delta}{R}\right)} \ln\left(\frac{1 - x_{A\infty}}{1 - x_{As}}\right)
+$$
+
+Once $C_1$ is determined:
+1. **Radial Molar Flux ($N_{Ar}$):** Substitute $C_1$ into the shell balance equation:
+   $$
+   N_{Ar}(r) = \frac{C_1}{r}
+   $$
+2. **Concentration Profile ($x_A(r)$):** Rearrange the boxed equation to obtain the drug mole fraction across $R \le r \le R + \delta$:
+   $$
+   \frac{1 - x_A(r)}{1 - x_{As}} = \left(\frac{1 - x_{A\infty}}{1 - x_{As}}\right)^{\frac{\ln(r/R)}{\ln((R+\delta)/R)}}
+   $$
+
+---
+
+## Nomenclature
+
+| Symbol | Description |
+| :--- | :--- |
+| $c$ | Total molar concentration of the solution |
+| $C_1$ | Integration constant ($r N_{Ar}$) |
+| $D_{AB}$ | Binary diffusivity of drug $A$ in water $B$ |
+| $N_{Ar}$ | Radial molar flux of drug $A$ |
+| $r$ | Radial coordinate |
+| $R$ | Radius of the cylindrical pill |
+| $x_A(r)$ | Mole fraction of drug $A$ at radial position $r$ |
+| $x_{As}$ | Mole fraction of drug $A$ at the pill surface ($r = R$) |
+| $x_{A\infty}$ | Bulk mole fraction of drug $A$ at $r = R + \delta$ |
+| $\delta$ | Thickness of the stagnant water boundary layer |
 
 ### Assumptions and limitations
 
