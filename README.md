@@ -207,9 +207,15 @@ $$
 
 Outward, away from the pill. The mixture’s molar-average motion points outward because $N_{Ar}+N_{Br}=N_{Ar}>0$. The outward water contribution $x_BN_{Ar}$ exactly balances the inward diffusive contribution $J_{Br}$, giving $N_{Br}=0$. Here $x_{As}\approx1$ is treated as close to one, since the flux expression becomes singular at exactly one.
 
-### Predicting release over time
+### Predicting release over time: steady radial concentration and drug flux(NumPy), independently solves the two-boundary (SciPy’s solve_bvp)
 
 The model gives the instantaneous release rate $\dot n_A=2\pi RL\,N_{Ar}(R)$ once $R$, $\delta$, and $c_\infty$ are specified. To predict cumulative release as the pill shrinks, add a solid mass balance and, for a finite bath, a liquid mass balance for the dissolved drug.
+
+<img width="1750" height="1575" alt="image" src="https://github.com/user-attachments/assets/cfea9279-e373-43be-b84c-b6d2f6e4162a" />
+Each row varies one parameter at a time, and the horizontal axis runs from the pill surface at \(0\) to the outer edge of the water layer at \(1\).
+- Thicker water layer lowers the surface flux. Increasing thickness from \(0.2\) to \(1.0\) mm reduced it from \(5.59\times10^{-3}\) to \(1.31\times10^{-3}\ \mathrm{mol/(m^2\,s)}\).
+- Higher diffusivity increases flux in direct proportion. With both boundary concentrations fixed, the steady concentration profiles coincide.
+- Higher surface mole fraction raises the concentration profile and increases outward flux.
 
 ## Problem 2 — Bath bomb dissolving into a well-mixed tub
 
