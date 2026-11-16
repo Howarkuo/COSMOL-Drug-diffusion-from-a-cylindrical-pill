@@ -212,8 +212,8 @@ Outward, away from the pill. The mixture’s molar-average motion points outward
 The model gives the instantaneous release rate $\dot n_A=2\pi RL\,N_{Ar}(R)$ once $R$, $\delta$, and $c_\infty$ are specified. To predict cumulative release as the pill shrinks, add a solid mass balance and, for a finite bath, a liquid mass balance for the dissolved drug.
 
 <img width="1750" height="1575" alt="image" src="https://github.com/user-attachments/assets/cfea9279-e373-43be-b84c-b6d2f6e4162a" />
-Each row varies one parameter at a time, and the horizontal axis runs from the pill surface at $0$ to the outer edge of the water layer at $1$.
-- Thicker water layer lowers the surface flux. Increasing thickness from $0.2$ to $1.0\ \mathrm{mm}$ reduced it from $5.59 \times 10^{-3}$ to $1.31 \times 10^{-3}\ \mathrm{mol/(m^2\,s)}$.
+Each row varies one parameter at a time, and the horizontal axis runs from the pill surface at $0$ to the outer edge of the water layer at 1.
+- Thicker water layer lowers the surface flux. Increasing thickness from 0.2 to 1.0 $\mathrm{mm}$ reduced it from $5.59 \times 10^{-3}$ to $1.31 \times 10^{-3}\ \mathrm{mol/(m^2\,s)}$.
 - Higher diffusivity increases flux in direct proportion. With both boundary concentrations fixed, the steady concentration profiles coincide.
 - Higher surface mole fraction raises the concentration profile and increases outward flux.
 
