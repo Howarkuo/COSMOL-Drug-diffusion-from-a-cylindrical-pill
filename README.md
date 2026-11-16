@@ -44,18 +44,131 @@ The model is one-dimensional in space. Concentration and flux vary with radial p
 | Outer edge of the water layer, $r=R+\delta$ | $c_A(R+\delta)=c_\infty$ | The concentration matches the bulk liquid. |
 | Pill surface, $r=R$ | $N_{Br}(R)=0$ | Water cannot cross the pill surface. |
 
+
 ### 1(a) Steady-state concentration profile and flux
 
-#### Cylindrical shell balance
+#### 1. Derive the general species balance
 
-Start with a cylindrical shell. At steady state, with no reaction in the water and negligible transport through the ends, the same number of moles per second crosses every cylindrical surface:
+Take a **fixed control volume** $V$ in the water. Let $c_A$ be the molar concentration, $\mathbf N_A$ the total molar flux of $A$ relative to the stationary pill, and $R_A$ the net rate of production of $A$ by reaction per unit volume. With $\mathbf n$ pointing outward from the control surface,
 
 $$
-\frac{d}{dr}\left(rN_{Ar}\right)=0,\qquad
-\frac{d}{dr}\left(rN_{Br}\right)=0.
+\underbrace{\frac{d}{dt}\int_V c_A\,dV}_{\text{accumulation}}
+=
+-\underbrace{\int_{\partial V}\mathbf N_A\cdot\mathbf n\,dS}_{\text{net outward flow}}
++\underbrace{\int_V R_A\,dV}_{\text{generation}}.
 $$
 
-Here $A$ is the drug, $B$ is water, and positive flux points radially outward. The pill is impermeable to water, so $N_{Br}(R)=0$. Thus $rN_{Br}=0$ throughout the layer. Write $rN_{Ar}=C_1$ for the drug.
+The minus sign is there because positive outward flux removes drug from the volume. Every term has units of $\mathrm{mol/s}$.
+
+The volume is fixed, so the time derivative can move inside the integral. By the divergence theorem,
+
+$$
+\int_{\partial V}\mathbf N_A\cdot\mathbf n\,dS
+=\int_V\nabla\cdot\mathbf N_A\,dV.
+$$
+
+Putting all three terms on one side gives
+
+$$
+\int_V\left(
+\frac{\partial c_A}{\partial t}
++\nabla\cdot\mathbf N_A
+-R_A
+\right)dV=0.
+$$
+
+Since this balance holds for any small volume in the water, the integrand is zero locally:
+
+$$
+\boxed{\frac{\partial c_A}{\partial t}
++\nabla\cdot\mathbf N_A-R_A=0.}
+\tag{1}
+$$
+
+For the pill, steady state gives $\partial c_A/\partial t=0$, and there is no reaction in the water, so $R_A=0$. Dissolution supplies drug **through the pill surface** at $r=R$. Inside the water layer, Eq. (1) therefore reduces to $\nabla\cdot\mathbf N_A=0$.
+
+#### 2. Derive the cylindrical divergence
+
+Draw a small **wedge-shaped volume** with radial thickness $dr$, angle $d\theta$, and axial length $dz$. Its arc length is $r\,d\theta$, so its volume to leading order is
+
+$$
+dV=r\,dr\,d\theta\,dz.
+$$
+
+For each direction, calculate **flux times area on the positive face minus flux times area on the negative face**, then divide by $dV$.
+
+##### Radial direction $r$
+
+The inner face has area $r\,d\theta\,dz$. The outer face is farther from the axis, so it has area $(r+dr)d\theta\,dz$. The net outward rate through these two faces is
+
+$$
+\begin{aligned}
+\text{Radial outflow}
+&=N_{Ar}(r+dr)(r+dr)d\theta\,dz
+-N_{Ar}(r)r\,d\theta\,dz\\
+&\simeq
+\frac{\partial(rN_{Ar})}{\partial r}\,dr\,d\theta\,dz.
+\end{aligned}
+$$
+
+Divide by $r\,dr\,d\theta\,dz$ to get
+
+$$
+\boxed{\text{Radial contribution}
+=\frac{1}{r}\frac{\partial(rN_{Ar})}{\partial r}.}
+$$
+
+**The $r$ inside the derivative comes from the changing face area.** When you move outward, both the flux and the area through which it passes can change.
+
+##### Angular direction $\theta$
+
+The two faces at $\theta$ and $\theta+d\theta$ each have area $dr\,dz$. Their flux difference is approximately $(\partial N_{A\theta}/\partial\theta)d\theta$. Thus,
+
+$$
+\text{Angular contribution}
+=\frac{
+(\partial N_{A\theta}/\partial\theta)\,d\theta\,dr\,dz
+}{r\,dr\,d\theta\,dz}
+=\boxed{\frac{1}{r}\frac{\partial N_{A\theta}}{\partial\theta}}.
+$$
+
+Here the $1/r$ converts a change per unit angle to a change per unit arc length, since the arc length is $r\,d\theta$.
+
+##### Axial direction $z$
+
+The two faces at $z$ and $z+dz$ each have area approximately $r\,dr\,d\theta$. Therefore,
+
+$$
+\text{Axial contribution}
+=\frac{
+(\partial N_{Az}/\partial z)\,dz\,r\,dr\,d\theta
+}{r\,dr\,d\theta\,dz}
+=\boxed{\frac{\partial N_{Az}}{\partial z}}.
+$$
+
+Add the three contributions and use $\nabla\cdot\mathbf N_A=0$ to obtain
+
+$$
+\boxed{
+\frac{1}{r}\frac{\partial(rN_{Ar})}{\partial r}
++\frac{1}{r}\frac{\partial N_{A\theta}}{\partial\theta}
++\frac{\partial N_{Az}}{\partial z}
+=0.
+}
+\tag{2}
+$$
+
+For the pill, rotational symmetry eliminates the angular derivative, and neglecting the ends eliminates the axial derivative. This leaves
+
+$$
+\frac{d}{dr}(rN_{Ar})=0
+\quad\Longrightarrow\quad
+rN_{Ar}=C_1.
+$$
+
+The **total molar rate** crossing a cylinder of radius $r$ is $2\pi rL\,N_{Ar}=2\pi L C_1$. As the area grows in proportion to $r$, the flux per unit area falls as $1/r$.
+
+Apply the same balance to water to get $d(rN_{Br})/dr=0$. The pill is impermeable to water, so $N_{Br}(R)=0$ and therefore $N_{Br}=0$ throughout the layer.
 
 #### Fick’s law in radial coordinates
 
