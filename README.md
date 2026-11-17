@@ -92,6 +92,7 @@ For each figure, right-click its **1D Plot Group → Add Image to Export**. Open
 
 
 ## Cylindrical Pill: Radial Flux Equation Integration
+[ written solution](https://drive.google.com/drive/u/0/folders/1RL-wboOD_i7TLHPF5oN-BlgRjX1fzoZ7)
 
 
 ## 1. Governing Equations
