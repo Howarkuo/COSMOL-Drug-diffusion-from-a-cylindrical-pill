@@ -23,6 +23,74 @@ The model is one-dimensional in space. Concentration and flux vary with radial p
 <img width="1122" height="565" alt="image" src="https://github.com/user-attachments/assets/f3d766b0-9e89-4a4e-897e-bb06a4324839" />
 <img width="1376" height="768" alt="Gemini_Generated_Image_klupb2klupb2klup" src="https://github.com/user-attachments/assets/fa9c6b9f-2209-423c-8260-30193e94e742" />
 <img width="1750" height="1400" alt="image" src="https://github.com/user-attachments/assets/2d416474-4c50-46c1-bf72-9004c9efe01f" />
+
+## COSMOL 6.4 
+![cylin-drug2-outwardradialflux.png](cylin-drug2-outwardradialflux.png)
+![cylin-drug2-cylindralbalance.png](cylin-drug2-cylindralbalance.png)
+![cylin-drugconcentration.png](cylin-drugconcentration.png)
+
+### COMSOL 6.4 workflow — Cylindrical pill diffusion
+
+Use this sequence to reproduce **Problem 1(a)** from a blank model. The model solves for \(u=\ln(1-x_A)\) across the water layer, then converts \(u\) into drug concentration and radial flux.
+
+## 1. Create the stationary 1D model
+
+1. Open **Model Wizard → 1D → Next**. Use ordinary **1D** for this setup.
+2. Choose **Mathematics → PDE Interfaces → Coefficient Form PDE → Add**.
+3. Keep one dependent variable named `u`, with unit `1`. Keep the source-term unit at the default `m^-2` for the dimensionless PDE coefficient used below.
+4. Choose **Study → Stationary → Done**.
+
+## 2. Enter parameters and build the water layer
+
+Under **Global Definitions → Parameters**, enter:
+
+| Name | Expression | Meaning |
+|---|---|---|
+| `Rpill` | `2[mm]` | Pill radius |
+| `delta` | `0.5[mm]` | Water-layer thickness |
+| `DAB` | `1e-9[m^2/s]` | Drug diffusivity |
+| `ctot` | `55500[mol/m^3]` | Total molar concentration |
+| `xAs` | `0.02` | Drug mole fraction at the pill surface |
+| `xAbulk` | `0.001` | Drug mole fraction at the outer edge |
+
+Right-click **Geometry 1 → Interval**. Set **Specify** to **Interval lengths**, enter `Rpill` as the **Left endpoint**, and enter `delta` as the **only length**. Click **Build All Objects**.
+
+**Checkpoint:** The latest line in **Messages** should report **1 domain and 2 boundaries**. If the segment is hard to see, click **Zoom Extents**. It runs from **2.0 to 2.5 mm**.
+
+## 3. Set the PDE and endpoint conditions
+
+Open the child node **Coefficient Form PDE 1**. Set the diffusion coefficient **`c`** to **`x/Rpill`** and set the source, absorption, convection, and other flux coefficients to zero. In this stationary, source-free model, `x/Rpill` supplies the cylindrical area factor. The physical diffusivity `DAB` enters when you calculate the drug flux.
+
+Right-click the **parent** node **Coefficient Form PDE (c)** and add **Dirichlet Boundary Condition** twice. In each node, keep **Prescribed value of u** checked, select one endpoint in **Graphics**, and enter its value in the field labeled **`r`**.
+
+| Node | Select this endpoint | Enter in prescribed-value field |
+|---|---|---|
+| **Dirichlet Boundary Condition 1** | Left, pill surface at 2.0 mm | `log(1-xAs)` |
+| **Dirichlet Boundary Condition 2** | Right, outer edge at 2.5 mm | `log(1-xAbulk)` |
+
+**Checkpoint:** Each node should list exactly one boundary ID, and the IDs should be different.
+
+## 4. Mesh and solve
+
+Click **Build Mesh → Compute**. The default plot of `u` should rise from approximately **−0.02020** to **−0.001001**. The physical drug concentration decreases because \(c_A=c_{\mathrm{tot}}(1-e^u)\).
+
+## 5. Make a separate plot for each result
+
+For each row below, right-click **Results → 1D Plot Group**, name the group, and then right-click the group → **Line Graph**. Use **Study 1/Solution 1** as the group’s dataset. In **Line Graph → Selection**, choose **All domains** or manually select **Domain 1**. Enter the expression under **y-Axis Data**, then click **Plot**.
+
+| Plot group | y-Axis expression | Baseline check |
+|---|---|---|
+| **Drug concentration** | `ctot*(1-exp(u))` | Decreases from **1,110 to 55.5 mol/m³** |
+| **Outward radial flux** | `ctot*DAB*d(u,x)` | Decreases from **\(2.388\times10^{-3}\)** to **\(1.910\times10^{-3}\ \mathrm{mol/(m^2\,s)}\)** |
+| **Cylindrical balance** | `x*ctot*DAB*d(u,x)` | Nearly constant at **\(4.776\times10^{-6}\ \mathrm{mol/(m\,s)}\)** |
+
+Use `x` on the horizontal axis for **radius**, or `(x-Rpill)/delta` to match the **0-to-1 axis** in your Python plots. A blank graph usually means the domain selection is empty or the parent group has the wrong dataset. In your balance plot, the visible ripples were **less than 0.01%** of the expected value. The tight y-axis scale magnified the small variations from taking the numerical derivative.
+
+## 6. Export the figures and save the model
+
+For each figure, right-click its **1D Plot Group → Add Image to Export**. Open the new node under **Results → Export**, choose **PNG**, enter a distinct filename, and click **Export**. Press **Ctrl+S** to save the `.mph` model with its plot groups and export settings.
+
+
 ## Cylindrical Pill: Radial Flux Equation Integration
 
 
