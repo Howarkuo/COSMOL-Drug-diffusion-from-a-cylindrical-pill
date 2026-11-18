@@ -477,6 +477,92 @@ Each row varies one parameter at a time, and the horizontal axis runs from the p
 - Higher diffusivity increases flux in direct proportion. With both boundary concentrations fixed, the steady concentration profiles coincide.
 - Higher surface mole fraction raises the concentration profile and increases outward flux.
 
+## Future Steps
+
+The current COMSOL model predicts steady outward drug flux for a fixed tablet radius and bulk concentration. The next step is to use that flux to predict **cumulative release versus time** in a finite, well-mixed bath. Then extend the geometry to include the exposed end faces and use fluid velocities to model tablet position.
+
+| Future step | Paper | What to use |
+| --- | --- | --- |
+| Include stirring and tablet position | Bai & Armenante (2009), [*Hydrodynamic, mass transfer, and dissolution effects induced by tablet location during dissolution testing*](https://doi.org/10.1002/jps.21512) | Use their USP Apparatus II study to replace a prescribed film thickness with flow-dependent mass-transfer coefficients. They compared CFD-based predictions with measured dissolution curves, including those for non-disintegrating salicylic acid tablets. |
+| Extend the dissolving surface | Fukunaka et al. (2006), [*Dissolution characteristics of cylindrical particles and tablets*](https://doi.org/10.1016/j.ijpharm.2005.12.006) | Use their cylindrical-particle model as a reference for including both end faces when the entire tablet is exposed. For Bai and Armenante’s vessel-bottom setup, include the top and curved side. |
+
+### 1. Couple the radial flux to a finite bath and a shrinking tablet
+
+Keep the liquid film quasi-steady, the tablet length $L$ fixed, and only the curved side exposed. Let $C(t)$ be the well-mixed bulk concentration in $\mathrm{mol/m^3}$ and $V_L$ the constant liquid volume. The existing steady radial flux $N_{Ar}$ supplies the release rate in $\mathrm{mol/s}$.
+
+$$
+\begin{aligned}
+\dot n_{\mathrm{rel}} &= 2\pi R(t)L\,N_{Ar}\!\left(R(t);C(t)\right),\\
+\frac{dn_{\mathrm{solid}}}{dt} &= -\dot n_{\mathrm{rel}},\\
+V_L\frac{dC}{dt} &= \dot n_{\mathrm{rel}}.
+\end{aligned}
+$$
+
+Replace the fixed outer-edge input $x_{A,\mathrm{bulk}}$ with $C(t)/c_{\mathrm{tot}}$. For constant $c_{\mathrm{tot}}$, $D_{AB}$, and film thickness $\delta$, the analytical surface flux is
+
+$$
+N_{Ar}(R;C)=
+\frac{c_{\mathrm{tot}}D_{AB}}{R\ln[(R+\delta)/R]}
+\ln\!\left(\frac{1-C/c_{\mathrm{tot}}}{1-x_{As}}\right).
+$$
+
+Start with $R=R_0$ to isolate the effect of drug accumulating in the bath. Then allow a pure, non-swelling solid with molar density $c_{\mathrm{solid}}$ to shrink. Conservation gives
+
+$$
+V_L(C-C_0)
+=c_{\mathrm{solid}}\pi L(R_0^2-R^2),
+\qquad
+R(C)=\sqrt{R_0^2-
+\frac{V_L(C-C_0)}{\pi Lc_{\mathrm{solid}}}}.
+$$
+
+Use SciPy's `solve_ivp` to integrate the bath ODE with $C(0)=C_0$. At each evaluation, update $R(C)$ and the analytical flux. Stop at solid exhaustion, or allow the flux to approach zero as $C$ approaches $C_s=c_{\mathrm{tot}}x_{As}$ if saturation limits release first. Compare cumulative release $V_L(C-C_0)$ with the decrease in tablet moles. For the sink comparison, hold the bulk concentration fixed and track cumulative release directly from the solid loss.
+
+### 2. Add the top face and reproduce the paper's shrinking geometry
+
+The side-only model holds $L$ fixed. Bai and Armenante assume a constant height-to-diameter ratio $\beta=h_T/d_T$, so both the height and diameter decrease. For a tablet resting on the vessel bottom, the top and side areas are
+
+$$
+A_{\mathrm{top}}=\frac{\pi d_T^2}{4},
+\qquad
+A_{\mathrm{side}}=\pi\beta d_T^2.
+$$
+
+The tablet volume is $\pi\beta d_T^3/4$. Applying the solid–liquid balance in Eqs. (7)–(10) gives
+
+$$
+d_T(C)=
+\left[d_{T0}^3-
+\frac{4V_L(C-C_0)}{\pi\beta c_{\mathrm{solid}}}\right]^{1/3}.
+$$
+
+With a common saturation concentration $C_s$ and bulk concentration $C$, add the top and side release rates:
+
+$$
+\begin{aligned}
+V_L\frac{dC}{dt}
+&=(k_{\mathrm{top}}A_{\mathrm{top}}+k_{\mathrm{side}}A_{\mathrm{side}})(C_s-C),\\
+k_{\mathrm{eff}}
+&=\frac{k_{\mathrm{top}}A_{\mathrm{top}}+k_{\mathrm{side}}A_{\mathrm{side}}}
+{A_{\mathrm{top}}+A_{\mathrm{side}}}
+=\frac{k_{\mathrm{top}}+4\beta k_{\mathrm{side}}}{1+4\beta}.
+\end{aligned}
+$$
+
+At $\beta=0.348$, the top and side account for about **42%** and **58%** of the exposed area, respectively. The release split also depends on each coefficient. Use solid molar density with molar concentrations, or the paper's solid mass density with mass concentrations.
+
+### 3. Predict how position changes the dissolution curve
+
+The current radial COMSOL model has no paddle or vessel flow. To predict a position effect, use the paper's CFD velocities as inputs to the correlations first. For centered tablets, use the rotating-disk analogy for the top and the rotating-cylinder analogy for the side. For off-center tablets, use the parallel flat-plate correlation for the top and cylinder crossflow for the side. Calculate $k_{\mathrm{eff}}$, integrate the bath balance, and compare the centered and off-center dissolution curves. A vessel-flow simulation can later supply those velocities directly. [PubMed](https://pubmed.ncbi.nlm.nih.gov/18781589/)
+
+| Equation in Bai & Armenante | Role in the workflow |
+| --- | --- |
+| Eq. (3) | Integrate the bath balance forward to predict $C(t)$. |
+| Eqs. (5)–(10) | Determine the changing tablet diameter and exposed area. |
+| Eqs. (4), (11) | Estimate an experimental $k$ from measured $C(t)$, accounting for the changing area. |
+| Eqs. (12)–(18) | Predict $k_{\mathrm{top}}$ and $k_{\mathrm{side}}$ from flow and transport properties. |
+| Eqs. (1), (2) | Compare matched dissolution profiles using $f_1$ (difference factor) and $f_2$ (similarity factor). |
+
 ## Problem 2 — Bath bomb dissolving into a well-mixed tub
 
 ### 2(a) Derive $c_A(t)$
